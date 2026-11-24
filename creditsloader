@@ -1,0 +1,156 @@
+--[[
+  Fireworks Credits
+  credits to gloomi for making this
+]]
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local Debris = game:GetService("Debris")
+local LP = Players.LocalPlayer
+
+-- UI credit text
+local gui = Instance.new("ScreenGui")
+gui.Name = "GloomiCredits"
+gui.ResetOnSpawn = false
+gui.IgnoreGuiInset = true
+gui.DisplayOrder = 999999
+pcall(function() gui.Parent = game:GetService("CoreGui") end)
+if not gui.Parent then
+	gui.Parent = LP:WaitForChild("PlayerGui")
+end
+
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1, 0, 0, 60)
+label.Position = UDim2.new(0, 0, 0.42, 0)
+label.BackgroundTransparency = 1
+label.Text = "credits to gloomi for making this"
+label.TextColor3 = Color3.fromRGB(255, 220, 120)
+label.Font = Enum.Font.GothamBold
+label.TextSize = 28
+label.TextStrokeTransparency = 0.4
+label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+label.Parent = gui
+
+-- fade in
+label.TextTransparency = 1
+TweenService:Create(label, TweenInfo.new(0.6), {TextTransparency = 0}):Play()
+
+-- firework helper
+local function burst(pos, color)
+	local part = Instance.new("Part")
+	part.Anchored = true
+	part.CanCollide = false
+	part.Transparency = 1
+	part.Size = Vector3.new(0.2, 0.2, 0.2)
+	part.Position = pos
+	part.Parent = workspace
+
+	local att = Instance.new("Attachment", part)
+
+	local pe = Instance.new("ParticleEmitter")
+	pe.Texture = "rbxassetid://241625054"
+	pe.Color = ColorSequence.new(color)
+	pe.Size = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0.6),
+		NumberSequenceKeypoint.new(1, 0)
+	})
+	pe.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0),
+		NumberSequenceKeypoint.new(1, 1)
+	})
+	pe.Lifetime = 0
+	pe.Speed = NumberRange.new(18, 32)
+	pe.SpreadAngle = Vector2.new(180, 180)
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Rate = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Lifetime = 0
+	pe.Parent = att
+
+	pe:Emit(60)
+
+	-- light flash
+	local light = Instance.new("PointLight")
+	light.Color = color
+	light.Brightness = 4
+	light.Range = 28
+	light.Parent = part
+	TweenService:Create(light, TweenInfo.new(0.8), {Brightness = 0}):Play()
+
+	Debris:AddItem(part, 1.2)
+end
+
+-- launch several fireworks around the player
+task.spawn(function()
+	local char = LP.Character or LP.CharacterAdded:Wait()
+	local hrp = char:WaitForChild("HumanoidRootPart", 5)
+	if not hrp then return end
+
+	local colors = {
+		Color3.fromRGB(255, 80, 80),
+		Color3.fromRGB(255, 200, 60),
+		Color3.fromRGB(80, 200, 255),
+		Color3.fromRGB(180, 100, 255),
+		Color3.fromRGB(80, 255, 140),
+		Color3.fromRGB(255, 120, 220),
+	}
+
+	for i = 1, 12 do
+		local offset = Vector3.new(
+			math.random(-40, 40),
+			math.random(18, 40),
+			math.random(-40, 40)
+		)
+		burst(hrp.Position + offset, colors[(i % #colors) + 1])
+		task.wait(0.18)
+	end
+end)
+
+-- fade out text later
+task.delay(5, function()
+	TweenService:Create(label, TweenInfo.new(1.2), {TextTransparency = 1}):Play()
+	task.wait(1.3)
+	gui:Destroy()
+end)
+
+print("credits to gloomi for making this")
